@@ -1,29 +1,77 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
+import {getText} from "../../api/api";
+import LoadingScreen from "../loading-screen/loading-screen";
+import Text from "../text/text";
 
 const Main = () => {
+  const [text, setText] = useState('');
+  const [indexCurrentLetter, setIndexCurrentLetter] = useState(0);
+  const [keyPress, setKeyPress] = useState('');
+  const [wrong, setWrong] = useState(false);
+  const [wrongWeight, setWrongWeight] = useState(0);
+  const [accurancy, setAccurancy] = useState(100);
+
+  const keyPressHandle = (evt) => setKeyPress(evt.key);
+
+  useEffect(() => {
+    getText(setText);
+
+    document.addEventListener('keypress', keyPressHandle);
+
+    return () => {
+      document.removeEventListener('keypress', keyPressHandle);
+    };
+  }, []);
+
+  useEffect(() => {
+    setWrongWeight((100/text.length).toFixed(3));
+  }, [text]);
+
+  console.log(wrongWeight);
+
+  useEffect(() => {
+    if (keyPress === text[indexCurrentLetter]) {
+      setIndexCurrentLetter(indexCurrentLetter+1);
+      setWrong(false);
+    } else if(keyPress) {
+      setWrong(true);
+      setAccurancy(accurancy-wrongWeight);
+    }
+  }, [keyPress]);
+
+  if (!text) {
+    return (<LoadingScreen/>);
+  }
 
   return (
   <div className="container">
     <div className="content">
-      <div className="content__text">
-        Bacon ipsum dolor amet pork belly ham hock ham sirloin ball tip tri-tip jerky kevin jowl doner short loin pastrami rump cow. Shoulder pork loin pork drumstick ball tip, capicola leberkas kevin buffalo hamburger short ribs andouille shank meatloaf filet mignon. Bacon venison ham tri-tip shoulder alcatra jowl. Pork short ribs pancetta ground round, kevin shankle beef boudin bresaola ham hock venison porchetta. Alcatra picanha pork belly drumstick chuck.
-      </div>
+      <Text text={text} indexCurrentLetter={indexCurrentLetter} wrongInput={wrong}/>
       <div className="content__statistics">
-        <div className="content__statistics-speed">
+        <div className="content__statistics_speed">
           <div className="content__statistics-caption">
             <span className="mdi mdi-speedometer"></span>
-            СКОРОСТЬ
+            скорость
           </div>
-          <div>0 зн/мин</div>
+          <div className="content__statistics_value">
+            <span>0</span>
+            зн/мин
+          </div>
         </div>
-        <div className="content__statistics-accuracy">
+        <div className="content__statistics_accuracy">
           <div className="content__statistics-caption">
             <span className="mdi mdi-bullseye-arrow"></span>
-            ТОЧНОСТЬ
+            точность
           </div>
-          <div>100%</div>
+          <div className="content__statistics_value">
+            <span>{accurancy.toFixed(1)}</span>
+            %
+          </div>
         </div>
-        <div className="content__statistics-replay">ЗАНОВО</div>
+        <a className="content__statistics-replay content__statistics-caption" href="/">
+          <span className="mdi mdi-refresh"></span>
+          заново
+        </a>
       </div>
     </div>
   </div>
