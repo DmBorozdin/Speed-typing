@@ -7,9 +7,13 @@ const Main = () => {
   const [text, setText] = useState('');
   const [indexCurrentLetter, setIndexCurrentLetter] = useState(0);
   const [keyPress, setKeyPress] = useState('');
+  const [firstKeyPress, setFirstKeyPress] = useState(false);
   const [wrong, setWrong] = useState(false);
   const [wrongWeight, setWrongWeight] = useState(0);
   const [accurancy, setAccurancy] = useState(100);
+  const [start, setStart] = useState(false);
+  const [timer, setTimer] = useState(0);
+  const [intervalId, setIntervalId] = useState(0);
 
   const keyPressHandle = (evt) => setKeyPress(evt.key);
 
@@ -20,24 +24,37 @@ const Main = () => {
 
     return () => {
       document.removeEventListener('keypress', keyPressHandle);
+      clearInterval(intervalId);
     };
   }, []);
 
   useEffect(() => {
-    setWrongWeight((100/text.length).toFixed(3));
+    setWrongWeight(Math.round(100000/text.length)/1000);
   }, [text]);
 
-  console.log(wrongWeight);
-
   useEffect(() => {
-    if (keyPress === text[indexCurrentLetter]) {
-      setIndexCurrentLetter(indexCurrentLetter+1);
+    if (keyPress && start && !firstKeyPress) {
+      setFirstKeyPress(true);
+      const interval = setInterval(() => setTimer(timer => timer + 1), 1000);
+      setIntervalId(interval);
+    }
+
+    if (keyPress == text[indexCurrentLetter]) {
+      setIndexCurrentLetter(indexCurrentLetter + 1);
       setWrong(false);
-    } else if(keyPress) {
+      setKeyPress('');
+      if (text.length === indexCurrentLetter + 1) {
+        clearInterval(intervalId);
+      }
+    } else if(keyPress && !wrong) {
       setWrong(true);
       setAccurancy(accurancy-wrongWeight);
     }
   }, [keyPress]);
+
+  const buttonClickHandle = () => {
+    setStart(true);
+  }
 
   if (!text) {
     return (<LoadingScreen/>);
@@ -45,7 +62,11 @@ const Main = () => {
 
   return (
   <div className="container">
-    <div className="content">
+    <div className={`start-block ${!start ? 'active-block' : ''}`}>
+      <h1 className="start-block__caption">Приготовься печатать. Поехали!</h1>
+      <button className="start-block__button" onClick={buttonClickHandle}>Начать печатать</button>
+    </div>
+    <div className={`content ${start && text.length !== indexCurrentLetter ? 'active-block' : ''}`}>
       <Text text={text} indexCurrentLetter={indexCurrentLetter} wrongInput={wrong}/>
       <div className="content__statistics">
         <div className="content__statistics_speed">
@@ -54,7 +75,7 @@ const Main = () => {
             скорость
           </div>
           <div className="content__statistics_value">
-            <span>0</span>
+            <span>{timer !== 0 ? Math.round(indexCurrentLetter*60/timer) : 0}</span>
             зн/мин
           </div>
         </div>
@@ -64,7 +85,7 @@ const Main = () => {
             точность
           </div>
           <div className="content__statistics_value">
-            <span>{accurancy.toFixed(1)}</span>
+            <span>{Math.round(accurancy*10)/10}</span>
             %
           </div>
         </div>
@@ -73,6 +94,11 @@ const Main = () => {
           заново
         </a>
       </div>
+    </div>
+    <div className={`finish-block ${text.length === indexCurrentLetter ? 'active-block' : ''}`}>
+      <h1 className="finish-block__caption">Поздравляем!</h1>
+      <p className="finish-block__text">Ваша скорость печати <span>{timer !== 0 ? Math.round(indexCurrentLetter*60/timer) : 0}</span> зн/мин с точностью <span>{Math.round(accurancy*10)/10}</span>%</p>
+      <a href="/" className="finish-block__replay" onClick={buttonClickHandle}>Попробовать снова</a>
     </div>
   </div>
   )
