@@ -2,6 +2,8 @@
 
 Speed Typing - это тренажёр для проверки скорости и точности слепой печати.
 
+Страница с развёрнутым проектом [https://dmborozdin.github.io/Speed-typing/](https://dmborozdin.github.io/Speed-typing/)
+
 ## Технологии применяемые в проекте
 
 1. Проект создан с использованием библиотеки React и собран с помощью webpack.
