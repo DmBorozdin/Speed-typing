@@ -3,6 +3,14 @@ import {getText} from "../../api/api";
 import LoadingScreen from "../loading-screen/loading-screen";
 import Text from "../text/text";
 
+const DELAY = 1000;
+const SECOND_IN_MINUTE = 60;
+const MAX_ACCURANCY = 100;
+const Digits = {
+  ONE: 10,
+  THREE: 1000
+};
+
 const Main = () => {
   const [text, setText] = useState('');
   const [indexCurrentLetter, setIndexCurrentLetter] = useState(0);
@@ -10,7 +18,7 @@ const Main = () => {
   const [firstKeyPress, setFirstKeyPress] = useState(false);
   const [wrong, setWrong] = useState(false);
   const [wrongWeight, setWrongWeight] = useState(0);
-  const [accurancy, setAccurancy] = useState(100);
+  const [accurancy, setAccurancy] = useState(MAX_ACCURANCY);
   const [start, setStart] = useState(false);
   const [timer, setTimer] = useState(0);
   const [intervalId, setIntervalId] = useState(0);
@@ -29,13 +37,13 @@ const Main = () => {
   }, []);
 
   useEffect(() => {
-    setWrongWeight(Math.round(100000/text.length)/1000);
+    setWrongWeight(Math.round(MAX_ACCURANCY*Digits.THREE/text.length)/Digits.THREE);
   }, [text]);
 
   useEffect(() => {
     if (keyPress && start && !firstKeyPress) {
       setFirstKeyPress(true);
-      const interval = setInterval(() => setTimer(timer => timer + 1), 1000);
+      const interval = setInterval(() => setTimer(timer => timer + 1), DELAY);
       setIntervalId(interval);
     }
 
@@ -75,7 +83,7 @@ const Main = () => {
             скорость
           </div>
           <div className="content__statistics_value">
-            <span>{timer !== 0 ? Math.round(indexCurrentLetter*60/timer) : 0}</span>
+            <span>{timer !== 0 ? Math.round(indexCurrentLetter*SECOND_IN_MINUTE/timer) : 0}</span>
             зн/мин
           </div>
         </div>
@@ -85,7 +93,7 @@ const Main = () => {
             точность
           </div>
           <div className="content__statistics_value">
-            <span>{Math.round(accurancy*10)/10}</span>
+            <span>{Math.round(accurancy*Digits.ONE)/Digits.ONE}</span>
             %
           </div>
         </div>
@@ -97,7 +105,7 @@ const Main = () => {
     </div>
     <div className={`finish-block ${text.length === indexCurrentLetter ? 'active-block' : ''}`}>
       <h1 className="finish-block__caption">Поздравляем!</h1>
-      <p className="finish-block__text">Ваша скорость печати <span>{timer !== 0 ? Math.round(indexCurrentLetter*60/timer) : 0}</span> зн/мин с точностью <span>{Math.round(accurancy*10)/10}</span>%</p>
+      <p className="finish-block__text">Ваша скорость печати <span>{timer !== 0 ? Math.round(indexCurrentLetter*SECOND_IN_MINUTE/timer) : 0}</span> зн/мин с точностью <span>{Math.round(accurancy*Digits.ONE)/Digits.ONE}</span>%</p>
       <a href="/" className="finish-block__replay" onClick={buttonClickHandle}>Попробовать снова</a>
     </div>
   </div>
