@@ -1,70 +1,39 @@
-# Getting Started with Create React App
+# Speed Typing
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Speed Typing - это тренажёр для проверки скорости и точности слепой печати.
 
-## Available Scripts
+## Технологии применяемые в проекте
 
-In the project directory, you can run:
+1. Проект создан с использованием библиотеки React и собран с помощью webpack.
+2. В проекте используются функциональные компоненты и React Hooks.
+3. Текст в тренажёре загружается через публичные API с помощью Fetch запроса.
+
+## Как работать над проектом
+
+Для удобства работы над проектом используются инструменты из **Node.js** и **npm**. Все необходимые настройки произведены. Для начала работы в терминале перейдите в директорию с проектом и _единожды_ запустите команду для установки зависимостей проекта из **npm**:
+
+```bash
+npm install
+```
+
+После успешной установки зависимостей вы сможете использовать инструменты для разработки, вроде **ESLint** и **Browsersync**, которые идут с проектом. Для этого в файле `package.json` предусмотрены следующие скрипты:
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Запускает приложение в режиме разработки. Запускает локальный сервер с помощью **Browsersync**. После запуска сайт будет доступен для просмотра в браузере по адресу [http://localhost:3000](http://localhost:3000).
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+При сохранении изменений в любом js-файле в директории `/js` страница автоматически перезагрузится в браузере. Таким образом, вы можете следить за разработкой проекта в режиме реального времени.
+
+> Обратите внимание, после запуска **Browsersync** продолжит работу, пока вы самостоятельно не остановите его, нажав в терминале сочетание клавиш `Ctrl` + `C`.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Запускает **ESLint** для линтинга js-файлов в директории `/src` по общим правилам и требованиям к JavaScript-коду.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Создаёт производственную сборку приложения в папку `public`.\
+В production режиме файлы собираются в один бандл и оптимизируются для увеличения производительности.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Сборка минимизирована, а имена файлов включают хэши.\
+Ваше приложение готово к работе.
